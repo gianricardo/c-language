@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main (void){
-    int variavel1=0, variavel2=0;
+    int variavel1=0, variavel2=0, resto;
     //mostra mensagem
     printf("Usuário, digite dois números inteiros: ");
     //le os numeros do teclado
@@ -12,7 +12,8 @@ int main (void){
     printf("Subtração : %d\n",variavel1-variavel2);//mostra o resultado da subtracao
     printf("Multiplicação : %d\n",variavel1*variavel2);//mostra o resultado da multiplicacao
     printf("Divisão : %d\n",variavel1/variavel2);//mostra o resultado da divisão inteira
-    printf("Resto : %d\n",variavel1%variavel2);//mostra o resto da divisão
+    resto=variavel1%variavel2;
+    printf("Resto : %d\n",resto);//mostra o resto da divisão
     //fim
 	return 0;
 }
