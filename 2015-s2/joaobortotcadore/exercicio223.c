@@ -4,13 +4,14 @@
 
 #define TAM 5
 
-int retorna_maior(int v[], int tam);
-int retorna_menor(int v[], int tam);
+//prototipos da funçãõ
+int retorna_maior(int v[], int tam); //funçãõ que retorna o maior valor de um vetor de inteiros
+int retorna_menor(int v[], int tam); //funçãõ que retorna o menor valor de um vetor de inteiros
 
 int main(void)
 {
 	int i, numeros_inteiros[TAM];
-	for(i=0;i<TAM;i++)
+	for(i=0;i<TAM;i++) //trecho que faz a leitura dos valores inteiros e armazena no vetor
 	{
 		printf("Digite o num%d:\n",i);	
 		scanf("%d", &numeros_inteiros[i]);
@@ -18,7 +19,7 @@ int main(void)
 	printf("Maior número: %d\n",retorna_maior(numeros_inteiros,TAM));
 	printf("Menor número: %d\n",retorna_menor(numeros_inteiros,TAM));
 }
-
+//implementação das funções
 int retorna_maior(int v[], int tam){
 	tam=TAM;
 	int i,maior=v[0]; 
