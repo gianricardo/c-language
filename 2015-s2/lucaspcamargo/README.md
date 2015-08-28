@@ -1,5 +1,8 @@
-# Exercicios Linguagem C
+# C and Data Structures Exercises
 Lucas Pires Camargo -- 11103082
+
+## About
+All comments and documentation are in english. Surely that won't be a problem, right? :)
 
 ## Building
 I am using cmake as a build system. You will need it to generate the required makefiles.
