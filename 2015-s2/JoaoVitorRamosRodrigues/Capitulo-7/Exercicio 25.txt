@@ -1,0 +1,140 @@
+
+**********************************************/
+
+/*******INICIO DO PROGRAMA PRINCIPAL**********/
+
+#include <stdio.h>//biblioteca de funções padrão C99
+#include <stdbool.h>//biblioteca de funções Booleanas 
+#include <string.h>//biblioteca de funções para manipulação de string
+#define STUDENTS 3//define o numero de estudantes
+#define EXAMS 4//define o numero de exames
+
+
+	/* function prototypes */
+
+void minimum( const int grades[][ EXAMS ], int pupils, int tests );
+void maximum( const int grades[][ EXAMS ], int pupils, int tests );
+void average( const int grades[][EXAMS],int pupils, int tests );
+void printArray( const int grades[][ EXAMS ], int pupils, int tests );
+
+/* function main begins program execution */
+int main( void )
+{
+	while(1){//garante que o menu sera executado toda a vez a não ser que o usuario digite o codigo de saída
+	
+   int student; /* student counter */
+   void (*processGrades[4])( const int grades[][ EXAMS ], int pupils, int tests) = {printArray,minimum,maximum,average};//declaração do ponteiro para as funcoes
+
+   printf("\n\nInsira a opcao desejada:\n0 imprime as notas\n1 imprime menor nota\n2 imprime maior nota\n3 Imprime a media de cada aluno\n4 finaliza o programa\n");
+
+   /* initialize student grades for three students (rows) */
+   const int studentGrades[ STUDENTS ][ EXAMS ] =
+      { { 77, 68, 86, 73 },
+        { 96, 87, 89, 78 },
+        { 70, 90, 86, 81 } };
+        
+    int option;
+    
+    scanf("%d", &option);
+    if(option<0 || option>4){
+        printf("Valor invalido, por favor escolha novamente");
+    }
+	else if(option==4){
+		break;
+	}
+	else{
+    	processGrades[option](studentGrades,STUDENTS,EXAMS);
+     
+    }
+}
+   return 0; /* indicates successful termination */
+} /* end main */
+
+/* Find the minimum grade */
+void minimum( const int grades[][ EXAMS ], int pupils, int tests )
+{
+   int i; /* student counter */
+   int j; /* exam counter */
+   int lowGrade = 100; /* initialize to highest possible grade */
+
+   /* loop through rows of grades */
+   for ( i = 0; i < pupils; i++ ) {
+
+      /* loop through columns of grades */
+      for ( j = 0; j < tests; j++ ) {
+
+         if ( grades[ i ][ j ] < lowGrade ) {
+            lowGrade = grades[ i ][ j ];
+         } /* end if */
+      } /* end inner for */
+   } /* end outer for */
+
+   printf("nota mais baixa = %d\n",lowGrade); /* return minimum grade */
+} /* end function minimum */
+
+/* Find the maximum grade */
+void maximum( const int grades[][ EXAMS ], int pupils, int tests )
+{
+   int i; /* student counter */
+   int j; /* exam counter */
+   int highGrade = 0; /* initialize to lowest possible grade */
+
+   /* loop through rows of grades */
+   for ( i = 0; i < pupils; i++ ) {
+
+      /* loop through columns of grades */
+      for ( j = 0; j < tests; j++ ) {
+
+         if ( grades[ i ][ j ] > highGrade ) {
+            highGrade = grades[ i ][ j ];
+         } /* end if */
+      } /* end inner for */
+   } /* end outer for */
+
+   printf("nota maxima = %d\n",highGrade);
+} /* end function maximum */
+
+/* Determine the average grade for a particular student */
+void average( const int grades[][EXAMS],int pupils, int tests )
+{
+   int i; /* exam counter */
+   int total = 0; /* sum of test grades */
+   int j; /* exam counter */
+   double studentAverage = 0 ;/* keep the sum of a unique student */
+
+  for ( i = 0; i < pupils; i++ ) {
+
+      /* loop through columns of grades */
+      for ( j = 0; j < tests; j++ ) {
+      	
+      	studentAverage = studentAverage + grades[ i ][ j ];//soma todas as notas de um unico estudante
+      } /* end inner for */
+      studentAverage=studentAverage/4;//calcula a media do aluno em questao
+      printf("nota do aluno %d = %lf\n",i,studentAverage);//imprime para o usuario o valor da media e o respectivo aluno
+      studentAverage = 0;//reseta a variavel para zero garantindo que nao havera contaminacao na proxima execucao
+   } /* end outer for */
+   
+   
+} /* end function average */
+
+/* Print the array */
+void printArray( const int grades[][ EXAMS ], int pupils, int tests )
+{
+   int i; /* student counter */
+   int j; /* exam counter */
+
+   /* output column heads */
+   printf( "                 [0]  [1]  [2]  [3]" );
+
+   /* output grades in tabular format */
+   for ( i = 0; i < pupils; i++ ) {
+
+      /* output label for row */
+      printf( "\nstudentGrades[%d] ", i );
+
+      /* output grades for one student */
+      for ( j = 0; j < tests; j++ ) {
+         printf( "%-5d", grades[ i ][ j ] );
+      } /* end inner for */
+   } /* end outer for */
+} /* end function printArray */
