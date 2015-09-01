@@ -28,4 +28,11 @@
 	gcc -o 230 exercicio230.c
 231: exercicio231.c
 	gcc -o 231 exercicio231.c
-
+313: exercicio313.c
+	gcc -o 313 exercicio313.c
+317: exercicio317.c
+	gcc -o 317 exercicio317.c
+725: exercicio725.c
+	gcc -o 725 exercicio725.c
+e725: 725
+	./725
