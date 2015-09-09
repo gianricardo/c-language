@@ -20,6 +20,7 @@ int main(void){
 		}
 		
 		else{
+			
 			break;
 		}
 	}

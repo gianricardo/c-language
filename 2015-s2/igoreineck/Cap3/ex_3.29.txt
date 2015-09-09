@@ -1,0 +1,2 @@
+O programa 3.29 exibe na tela uma string de caracteres baseada
+no resto do número dependente de cada iteração.
