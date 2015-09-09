@@ -3,6 +3,7 @@
 #include <time.h>
 #include <limits.h>
 
+// os dois tipos abaixos foram retirados do openepos - especificação de cpu
 typedef unsigned long Reg32;
 
 typedef union {
