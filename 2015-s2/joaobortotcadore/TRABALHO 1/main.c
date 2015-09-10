@@ -5,8 +5,8 @@
 
 /*BUGS E ANOTAÇOES
 OK - Função cadastra nome, não pega string com espaço usar //fgets(agenda->contato[agenda->qnt_agenda].nome, TAM_NOME, stdin); --> funcionou com o fgets + setbuf (inserido dentro da função quando vai ser feito a leitura) "setbuf(stdin,NULL) = limpa o buffer do stdin para não ter nenhuma sujeira no teclado"
-OK - Vai ter problema nessa condiçãõ : tiver 2 ou mais contatos, excluir o primeiro, e entãõ adicionar um outro contato, pois quem esta cuidando a posição do vetor do contato é a variavel qnt_agenda. Ao excluir a qnt_agenda vai para 1, e ao adicionar novo contato, ele vai sobreescrever o contato na posiçao 2 do vetor contato (contato[1]). Implementar uma função que retorne a posiçãõ do vetor contato livre para adicionar um contato --> resolvido, faltou atenção e revisão, era problema da estrutura
-OK - no caso de (contato 1, contato 2, ..) parece que a função excluir libera toda a memoria se excluir contato 1. Quem sabe solucione se copiar os dados do ultimo contato adicionado na agenda e sobreescrever o que se deseja excluir --> estava fazendo operações na estrutura errada, basta não imprimir contatos que tenham '0' no nome, pois foi usado o comando memset(&agenda->contato[i],0,sizeof(dados_t));
+OK - Vai ter problema nessa condiçãõ : tiver 2 ou mais contatos, excluir o primeiro, e entãõ adicionar um outro contato, pois quem esta cuidando a posição do vetor do contato é a variavel qnt_agenda. Ao excluir a qnt_agenda vai para 1, e ao adicionar novo contato, ele vai sobreescrever o contato na posiçao 2 do vetor contato (contato[1]). Implementar uma função que retorne a posiçãõ do vetor contato livre para adicionar um contato --> resolvido, faltou atenção e revisão, era problema da estrutura, se sempre ordenar, a posicao livre é a posicao quantidade de elementos
+COISA DE LOUCO!! NÃO OK - no caso de (contato 1, contato 2, ..) parece que a função excluir libera toda a memoria se excluir contato 1. Quem sabe solucione se copiar os dados do ultimo contato adicionado na agenda e sobreescrever o que se deseja excluir --> estava fazendo operações na estrutura errada, basta não imprimir contatos que tenham '0' no nome, pois foi usado o comando memset(&agenda->contato[i],0,sizeof(dados_t));
 - não imprimir contatos que tenham somente '0' no nome
 OK - ver como limpar a tela depois de escolher o menu
 OK - falta função pra ver se o ano é bissexto, para o cadastro de aniversario
@@ -14,7 +14,7 @@ OK - implementar pre condições de agenda nao vazia para as funções --> imple
 OK - implementar verificaçãõ se a agenda esta criada para pre condições de cadastro --> a pre condicao é garantida com o teste feito após a alocacao de memória para a estrutura agenda e com o teste do arquivo criado com sucesso
 -substituir os comentarios 'liberar memoria' pela implementaçãõ do codigo free
 OK - função mostra agenda ordenada esta com problemas, esta alterando a agenda original e nao a copia da agenda --> nao vai ter copia de agenda, ficara salvo na agenda a ultima ordenaçao feita pelo usuario
-- depois que cadastra varias vezes, exclui contatos e cadastrar novos, projetando encontrei algumas falhas. Ele deve ser ordenado, criar uma regra na inserção de novos contatos
+- depois que cadastra varias vezes, exclui contatos e cadastrar novos, projetando encontrei algumas falhas. Ele deve ser ordenado, criar uma regra na inserção de novos contatos --> sempre ordenar o vetor de contatos para que a posiçao livre esteja sempre na ultima posicao, ordenar sempre por nome, pelo fato de ser mais natural uma agenda estar ordenada pelo nome 
 //memcpy(&agenda->contato[i], &agenda->contato[(agenda->qnt_agenda)-1], sizeof(dados_t)); //void * memcpy ( void * destination, const void * source, size_t num );
 
 */
@@ -207,11 +207,11 @@ int main (void)
 				int i;
 				for(i=0; i < agenda->qnt_agenda;i++) //varre todo o vetor de contatos da agenda, que contém a estrutura de dados do contato em cada posiçao do vetor 
 				{
-					printf("Contato: %s",agenda->contato[i].nome);
+					printf("Contato: %s\n",agenda->contato[i].nome);
 					printf("Aniversario: %2d/%2d/%4d\n",agenda->contato[i].dia, agenda->contato[i].mes, agenda->contato[i].ano);
 					printf("Celular: %d\n",agenda->contato[i].celular);
-					printf("Twitter: %s",agenda->contato[i].twitter);
-					printf("Facebook: %s",agenda->contato[i].facebook);
+					printf("Twitter: %s\n",agenda->contato[i].twitter);
+					printf("Facebook: %s\n",agenda->contato[i].facebook);
 					printf("\n");
 				}
 				printf("Quantidade de contatos cadastrados: %d\n", agenda->qnt_agenda);
@@ -238,10 +238,11 @@ void agenda_inicializa(agenda_t *agenda)
 	}
 }
 
+//Para garantir que os novos cadastros sejam feitos na última posição do vetor contatos, é necessário ordenar
 //CADASTRA CONTATO
 //parametro de entrada: estrutura agenda
-//pre condicoes: agenda nao estar cheia e agenda criada
-//pos condicoes: contato cadastrado na agenda, quantidade de contatos incrementado 
+//pre condicoes: agenda nao estar cheia, agenda criada, agenda ordenada
+//pos condicoes: contato cadastrado na agenda, quantidade de contatos incrementado, agenda ordenada com o novo contato 
 void cadastra_contato(agenda_t *agenda)
 {
 	if (agenda == NULL)
@@ -255,12 +256,15 @@ void cadastra_contato(agenda_t *agenda)
 		printf("NÃO HÁ MAIS ESPAÇO NA AGENDA.\n");
 		return;	
 	}
+
+	ordenacao_insercao_nome(agenda);
 	cadastra_nome(agenda);
 	cadastra_aniversario(agenda);
 	cadastra_celular(agenda);
 	cadastra_twitter(agenda);
 	cadastra_facebook(agenda);
 	agenda->qnt_agenda++; //quantidade total de contatos incrementado
+	ordenacao_insercao_nome(agenda);
 }
 //-----------------------------------------------------------------------
 //As funções deste bloco são acessadas somente pela função 'CADASTRA CONTATO'
@@ -356,7 +360,7 @@ void cadastra_facebook(agenda_t *agenda)
 //EXCLUIR PELO NOME
 //parametro de entrada: estrutura agenda, nome do contato a ser excluido
 //pre condicoes: agenda criada e agenda nao estar vazia
-//pos condicoes: contato excluido e quantidade de contatos decrementado se encontrar o nome
+//pos condicoes: contato excluido, quantidade de contatos decrementado se encontrar o nome e agenda ordenada apos a exclusao
 void excluir_pelo_nome(agenda_t *agenda, char *nome)
 {
 	int i,aux=0; //variavel 'i' auxiliar para o laço for. Variavel 'aux' para teste se caiu ao menos uma vez no teste do if
@@ -365,8 +369,9 @@ void excluir_pelo_nome(agenda_t *agenda, char *nome)
 		if(strcmp(nome,agenda->contato[i].nome) == 0) //funcao compara o nome informado pelo usuario e os contidos na estrutura
 		{
 			aux=1;
-			memset(&agenda->contato[i],0,sizeof(dados_t)); //seta memoria dos dados em zero, depois tem um teste que não deixa imprimir se os valores estao zerados
+			memset(&agenda->contato[i],0,sizeof(dados_t)); //seta memoria dos dados em zero
 			agenda->qnt_agenda--;
+			//ordenacao_insercao_nome(agenda);
 		}
 	}
 	if(aux==0)
@@ -543,6 +548,11 @@ void mostra_agenda_ordenada_nome(agenda_t *agenda)
 	ordenacao_insercao_nome(agenda); //ordena pelo metodo de insercao
 	for (i = 0; i < agenda->qnt_agenda; i++)
 	{
+		//pelo memset sabemos que o celular fica com valor 0
+		if(agenda->contato[i].celular == 0)
+		{
+			continue;
+		}
 		printf("Contato: %s\n",agenda->contato[i].nome);
 		printf("Aniversario: %2d/%2d/%4d\n",agenda->contato[i].dia, agenda->contato[i].mes, agenda->contato[i].ano);
 		printf("Celular: %d\n",agenda->contato[i].celular);
@@ -559,11 +569,14 @@ void mostra_agenda_ordenada_nome(agenda_t *agenda)
 void mostra_agenda_ordenada_mes(agenda_t *agenda)
 {
 	int i;	
-	//agenda_t *cpy_agenda = (agenda_t *)malloc(sizeof(agenda_t));
-	//cpy_agenda = agenda; //faz backup da agenda -> nãõ faz backup da agenda
 	ordenacao_insercao_mes(agenda); //ordena pelo metodo de insercao
 	for (i = 0; i < agenda->qnt_agenda; i++)
 	{
+		//pelo memset sabemos que o celular fica com valor 0
+		if(agenda->contato[i].celular == 0)
+		{
+			continue;
+		}
 		printf("Contato: %s\n",agenda->contato[i].nome);
 		printf("Aniversario: %2d/%2d/%4d\n",agenda->contato[i].dia, agenda->contato[i].mes, agenda->contato[i].ano);
 		printf("Celular: %d\n",agenda->contato[i].celular);
@@ -593,7 +606,7 @@ void ordenacao_insercao_nome(agenda_t *agenda)
 		}
 		agenda->contato[j+1] = agenda1contato->contato[0];
 	}
-	return;
+ 	return;
 	//liberar moemoria agenda1contato
 }
 
