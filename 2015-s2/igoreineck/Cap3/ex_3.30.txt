@@ -1,0 +1,2 @@
+O programa gera uma impressão na tela, mostrando uma string de caracteres
+de maior ">" ou menor "<", baseadas no resto da divisão de cada iteração, sendo maior para ímpar e menor para par.
