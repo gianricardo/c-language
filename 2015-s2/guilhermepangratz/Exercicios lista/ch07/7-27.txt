@@ -1,0 +1,17 @@
+ O volume na unidade C n∆o tem nome.
+ O N£mero de SÇrie do Volume Ç 3871-FD29
+
+ Pasta de C:\Users\GuilhermeAugusto\Documents\GitHub\c-language\2015-s2\guilhermepangratz\Exercicios lista\ch05
+
+11/09/2015  02:39    <DIR>          .
+11/09/2015  02:39    <DIR>          ..
+11/09/2015  02:04               569 5-15.c
+11/09/2015  02:04            69.277 5-15.exe
+11/09/2015  02:20               444 5-25.c
+11/09/2015  02:20            68.593 5-25.exe
+10/09/2015  21:40               474 5-35.c
+09/09/2015  14:49            68.604 5-35.exe
+02/09/2015  14:14                 2 5-36.c
+11/09/2015  02:39                 0 7-27.txt
+               8 arquivo(s)        207.963 bytes
+               2 pasta(s)   57.406.345.216 bytes dispon°veis
