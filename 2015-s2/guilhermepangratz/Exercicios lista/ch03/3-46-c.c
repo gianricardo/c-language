@@ -4,28 +4,25 @@
 
 int main () {
 	
-	float e = 1;
-	int expoente;
+	int x, i, j, limite = 18;
 	
-	printf("\nValor do expoente: ");
-	scanf("%i", &expoente);
+	long long int potencia = 1, fatorial = 1;
+		
+	double e = 1;
 	
-	for (int i = 1; i < 31; i++) {
-		
-		float fatorial = 1;
-		float xelevado = expoente;
+	printf("Expoente de e: ");
+	scanf("%d", &x);
 	
-		for (int j = 1; j <= i; j++) {
-			fatorial *= j;
-			xelevado *= expoente;
-		}
-		printf("%f/%10.10f\n", xelevado, expoente);
+	for ( i = 1; i <= limite; i++) {	
+
+		fatorial *= i;
+		potencia *=x;
 		
-		e += (xelevado/fatorial);
+		printf("fatorial = %ld | potencia = %ld\n", fatorial, potencia);
 		
+		e += potencia*1.0/fatorial;
 	}
 	
-	printf("e = %f", e);
-	
-
+	printf("\n e ^ %d = %f\n", x, e);
+		
 }
