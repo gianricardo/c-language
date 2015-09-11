@@ -1,0 +1,1 @@
+It draws a rectangle with the specified dimensions, made of @'s

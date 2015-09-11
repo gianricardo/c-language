@@ -1,0 +1,1 @@
+It determines the size of the entered string.
