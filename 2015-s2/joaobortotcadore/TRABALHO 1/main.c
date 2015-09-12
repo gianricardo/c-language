@@ -10,11 +10,11 @@ COISA DE LOUCO!! NÃO OK - no caso de (contato 1, contato 2, ..) parece que a fu
 - não imprimir contatos que tenham somente '0' no nome
 OK - ver como limpar a tela depois de escolher o menu
 OK - falta função pra ver se o ano é bissexto, para o cadastro de aniversario
-OK - implementar pre condições de agenda nao vazia para as funções --> implementado com a macro agenda_vazia
+OK - implementar pre condições de agenda nao vazia para as funções --> implementado com a macro agenda_vazia  
 OK - implementar verificaçãõ se a agenda esta criada para pre condições de cadastro --> a pre condicao é garantida com o teste feito após a alocacao de memória para a estrutura agenda e com o teste do arquivo criado com sucesso
 -substituir os comentarios 'liberar memoria' pela implementaçãõ do codigo free
 OK - função mostra agenda ordenada esta com problemas, esta alterando a agenda original e nao a copia da agenda --> nao vai ter copia de agenda, ficara salvo na agenda a ultima ordenaçao feita pelo usuario
-- depois que cadastra varias vezes, exclui contatos e cadastrar novos, projetando encontrei algumas falhas. Ele deve ser ordenado, criar uma regra na inserção de novos contatos --> sempre ordenar o vetor de contatos para que a posiçao livre esteja sempre na ultima posicao, ordenar sempre por nome, pelo fato de ser mais natural uma agenda estar ordenada pelo nome
+- depois que cadastra varias vezes, exclui contatos e cadastrar novos, projetando encontrei algumas falhas. Ele deve ser ordenado, criar uma regra na inserção de novos contatos --> sempre ordenar o vetor de contatos para que a posiçao livre esteja sempre na ultima posicao, ordenar sempre por nome, pelo fato de ser mais natural uma agenda estar ordenada pelo nome 
 //memcpy(&agenda->contato[i], &agenda->contato[(agenda->qnt_agenda)-1], sizeof(dados_t)); //void * memcpy ( void * destination, const void * source, size_t num );
 
 */
@@ -115,7 +115,7 @@ int main (void)
 				}
 				char nome[TAM_NOME];
 				printf("Digite o nome do contato para excluir:\n");
-				setbuf(stdin,NULL); //limpa o buffer do stdin para não ter nenhuma sujeira no teclado
+				setbuf(stdin,NULL); //limpa o buffer do stdin para não ter nenhuma sujeira no teclado	
 				fgets(nome, TAM_NOME, stdin);				
 				excluir_pelo_nome(agenda,nome);
 				break;
@@ -129,7 +129,7 @@ int main (void)
 				}
 				char nome[TAM_NOME];
 				printf("Digite o nome do contato para editar:\n");
-				setbuf(stdin,NULL); //limpa o buffer do stdin para não ter nenhuma sujeira no teclado
+				setbuf(stdin,NULL); //limpa o buffer do stdin para não ter nenhuma sujeira no teclado	
 				fgets(nome, TAM_NOME, stdin);				
 				alterar_pelo_nome(agenda,nome);
 				break;
@@ -205,7 +205,7 @@ int main (void)
 			default: //imprime toda a agenda
 			{
 				int i;
-				for(i=0; i < agenda->qnt_agenda;i++) //varre todo o vetor de contatos da agenda, que contém a estrutura de dados do contato em cada posiçao do vetor
+				for(i=0; i < agenda->qnt_agenda;i++) //varre todo o vetor de contatos da agenda, que contém a estrutura de dados do contato em cada posiçao do vetor 
 				{
 					printf("Contato: %s\n",agenda->contato[i].nome);
 					printf("Aniversario: %2d/%2d/%4d\n",agenda->contato[i].dia, agenda->contato[i].mes, agenda->contato[i].ano);
@@ -230,7 +230,7 @@ int main (void)
 //pos condicoes: inicializa a quantidade de contatos na agenda em 0, todos os dados dos contatos da agenda inicializam com 0
 void agenda_inicializa(agenda_t *agenda)
 {
-	int i; //variavel auxiliar para o laço for
+	int i; //variavel auxiliar para o laço for	
 	agenda->qnt_agenda=0; //inicializa posicao em 0
 	for(i=0;i < TAM_AGENDA; i++) //varre todos os contatos da agenda e seta com 0
 	{ 
@@ -340,7 +340,7 @@ void cadastra_celular(agenda_t *agenda)
 //pos condicoes: endereço twitter cadastrado no contato
 void cadastra_twitter(agenda_t *agenda)
 {
-	setbuf(stdin,NULL); //limpa o buffer do stdin para não ter nenhuma sujeira no teclado
+	setbuf(stdin,NULL); //limpa o buffer do stdin para não ter nenhuma sujeira no teclado	
 	printf("Digite twitter do contato: @");
 	fgets(agenda->contato[agenda->qnt_agenda].twitter, TAM_NOME, stdin);
 }
@@ -351,7 +351,7 @@ void cadastra_twitter(agenda_t *agenda)
 //pos condicoes: endereço facebook cadastrado no contato
 void cadastra_facebook(agenda_t *agenda)
 {
-	setbuf(stdin,NULL); //limpa o buffer do stdin para não ter nenhuma sujeira no teclado
+	setbuf(stdin,NULL); //limpa o buffer do stdin para não ter nenhuma sujeira no teclado		
 	printf("Digite o facebook do contato: https://www.facebook.com/");
 	fgets(agenda->contato[agenda->qnt_agenda].facebook, TAM_NOME, stdin);
 }
@@ -387,7 +387,7 @@ void excluir_pelo_nome(agenda_t *agenda, char *nome)
 void alterar_pelo_nome(agenda_t *agenda, char *nome)
 {
 	int i, opcao_fn_alterar, aux=0; //variavel 'i' auxiliar para o laço for. 'opcao_fn_alterar' para switch case. Variavel 'aux' para teste se caiu ao menos uma vez no teste do if
-	for(i=0; i < agenda->qnt_agenda;i++) //varre todo o vetor de contatos da agenda, que contém a estrutura de dados do contato em cada posiçao do vetor
+	for(i=0; i < agenda->qnt_agenda;i++) //varre todo o vetor de contatos da agenda, que contém a estrutura de dados do contato em cada posiçao do vetor 
 	{
 		if(strcmp(nome,agenda->contato[i].nome) == 0) //funcao compara o nome informado pelo usuario e os contidos na estrutura
 		{
