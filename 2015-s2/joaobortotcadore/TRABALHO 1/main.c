@@ -672,4 +672,3 @@ void troca_dados_contatos(agenda_t *agenda, int pos_contato1, int pos_contato2)
 
 	//liberar memoria aux_agenda
 }
-

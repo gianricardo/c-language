@@ -1,0 +1,1 @@
+It appends the string s2 to the string s1.

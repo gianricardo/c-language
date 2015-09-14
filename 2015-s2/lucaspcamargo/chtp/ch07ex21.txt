@@ -1,0 +1,21 @@
+A)
+    The pointer variable does was not initialized before use.
+
+B)
+    You can assign pointers to a pointer of a different type.
+    Also, both are unitialized.
+
+C)
+    What happens is that only x is declared as a pointer, y is not a pointer type.
+
+D)
+    An array vairiable can be incremented like a pointer. The counter should have been used instead.
+
+E)
+    A generic pointer (void*) can't be dereferenced.
+
+F)
+    xPtr is not a poniter. It can't be assigned the variable's address.
+
+G)
+    The pointer is uninitialized and can't be used safely.

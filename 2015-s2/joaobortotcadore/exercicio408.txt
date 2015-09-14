@@ -1,0 +1,9 @@
+y representa as linhas
+x representa as colunas
+
+imprime @ até a contagem de j ser igual a de x
+quebra linha
+
+repete o procedimento acima até a contagem de i ser igual a de y
+
+Portanto, imprime um retangulo, baseado nas dimensões fornecidas pelo usuário
