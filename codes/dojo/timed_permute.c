@@ -13,12 +13,14 @@ int main (void)
     
     srand( (int) time(0) );
 
-    for( int i = 4; i <= 20; i++ )
+    int i, j;
+    
+    for( i = 4; i <= 20; i++ )
     {
         char digitos[i+1];
         char buf[i+1];
                 
-        for( int j = 0; j < i; j++ )
+        for( j = 0; j < i; j++ )
         {   
             digitos[j] = (char)('2' + (rand() % 8));
         }
