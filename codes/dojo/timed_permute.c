@@ -36,7 +36,7 @@ int main (void)
 
 }
 
-void combine(char * digits, char* buf, int pos, int size, FILE * file)
+void combine(char * digits, char* buf, int pos, int size)
 {
 	int i;
 	int iteracao = 3;
