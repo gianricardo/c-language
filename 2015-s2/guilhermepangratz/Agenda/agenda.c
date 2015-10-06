@@ -36,6 +36,11 @@ void mostrar_agenda_nome(s_contato vetor_agenda[SIZE], int a, int b);
 int gravar(s_contato vetor_agenda[SIZE]); /*grava os dados do vetor de contatos no arquivo*/
 void excluir_pelo_nome(s_contato vetor_agenda[SIZE]);/*excluir um contato pelo nome*/
 void alterar_pelo_nome(s_contato vetor_agenda[SIZE]);/*Selecionar um contato pelo nome e alterar*/
+void consultar_aniversariantes(s_contato vetor_agenda[SIZE], char dia[3], char mes[3]); /*Exibe os aniversariantes do dia desejado ou somente do mes se o dia for "00"*/
+void aniversariantes_data(s_contato vetor_agenda[SIZE]); /*Consultar os aniversariantes de uma data no formato dd/mm*/
+void aniversariantes_mes(s_contato vetor_agenda[SIZE]); /*Consultar os aniversariantes de um mes*/
+void aniversariantes_inicial(s_contato vetor_agenda[SIZE]); /*Exibir todos os nomes com a inicial solicitada e as suas datas de aniversario*/
+void mostrar_agenda_mes(s_contato vetor_agenda[SIZE]);
 
 /*Fim dos protótipos*/
 
@@ -55,13 +60,21 @@ int main() {
             case 3 : 
                 alterar_pelo_nome(contatos);
                 break;
-            case 4 : break;
-            case 5 : break;
-            case 6 : break;
+            case 4 : 
+                aniversariantes_data(contatos);
+                break;
+            case 5 : 
+                aniversariantes_mes(contatos);
+                break;
+            case 6 : 
+                aniversariantes_inicial(contatos);
+                break;
             case 7 : 
                 mostrar_agenda_nome(contatos, 0, SIZE); 
                 break;
-            case 8 : break;
+            case 8 : 
+                mostrar_agenda_mes(contatos);
+                break;
             case 9 : 
                 if (gravar(contatos)) return 0;
             default : printf("entre um valor valido\n\n");
@@ -94,9 +107,12 @@ int menu(){
     
     char buf_opcao[BUFSIZ];
     fgets(buf_opcao, BUFSIZ, stdin);
+    strtok(buf_opcao, "\n");
     
-    printf("\n----------------------------------------------------------------------------------------------------\n");
-    return (buf_opcao[0] - '0');
+    printf("----------------------------------------------------------------------------------------------------\n\n");
+    
+    if (strlen(buf_opcao) == 1) return (buf_opcao[0] - '0');
+    else return 0;
 }
 
 void ler_agenda_arquivo(s_contato vetor_agenda[SIZE]){
@@ -150,7 +166,7 @@ void ler_agenda_arquivo(s_contato vetor_agenda[SIZE]){
 }
 
 void cadastrar(s_contato vetor_agenda[SIZE]){
-    
+    printf("Cadastrar pessoa na agenda de contatos\n\n");
     if (strcmp(vetor_agenda[SIZE - 1].nome, "")) {
         printf("A agenda está cheia\n\n");
     } else {
@@ -331,7 +347,8 @@ void alocar_contato(s_contato vetor_agenda[SIZE], s_contato contato) {
 
 void mostrar_agenda_nome(s_contato vetor_agenda[SIZE], int a, int b){
     int i;
-    printf("\nNome\ndata de aniversario - celular - twitter - facebook\n");
+    printf("\nAgenda ordenada pelo nome\n\n"
+            "Nome\ndata de aniversario - celular - twitter - facebook\n");
     for (i = a; i < b && strcmp(vetor_agenda[i].nome, ""); i++){
         printf("\n%s\n%s | %s | %s | %s\n", vetor_agenda[i].nome, vetor_agenda[i].data,
                 vetor_agenda[i].celular, vetor_agenda[i].twitter, vetor_agenda[i].facebook);
@@ -366,6 +383,7 @@ int gravar(s_contato vetor_agenda[30]) {
 }
 
 void excluir_pelo_nome(s_contato vetor_agenda[SIZE]){
+    printf("\n\nExcluir pessoa a partir do nome:\n");
     int teste, i, chave_i = -1, chave_j = -1, q = 0;
     char buf_nome[100];
     adquirir_nome(buf_nome);
@@ -452,7 +470,7 @@ void excluir_pelo_nome(s_contato vetor_agenda[SIZE]){
 }
 
 void alterar_pelo_nome(s_contato vetor_agenda[SIZE]) {
-    printf("\n\nALTERAR CONTATO:\n");
+    printf("Alterar dados a partir do nome:\n");
     int teste, i, chave_i = -1, chave_j = -1, q = 0;
     char buf_nome[100];
     adquirir_nome(buf_nome);
@@ -478,9 +496,9 @@ void alterar_pelo_nome(s_contato vetor_agenda[SIZE]) {
     char opcao[BUFSIZ];
     while(1){
         teste = 0;
-        printf("\n-> -1 para cancelar\n"
-            "-> maior que zero para apagar o contato correspondente desejado (EX:"
-            " 1 para editar o primeiro contato com nome igual)\nOpcao desejada: ");
+        printf("-> -1 para cancelar\n"
+            "-> maior que zero para editar o contato indicado (EX:"
+            " 1 para editar o primeiro contato correspondente)\nOpcao desejada: ");
         fgets(opcao, BUFSIZ, stdin);
         strtok(opcao, "\n");
         i = 0;
@@ -565,4 +583,97 @@ void alterar_pelo_nome(s_contato vetor_agenda[SIZE]) {
     //realocar  o contato
     alocar_contato(vetor_agenda, hold);
     
+}
+
+void consultar_aniversariantes(s_contato vetor_agenda[SIZE], char dia[3], char mes[3]) {
+    int i, qaniver = 0;
+    int dia_switch;
+    if (!strcmp(dia, "00")) dia_switch = 1; // TRUE
+    for (i=0; i<SIZE; i++) {
+        if ( (!strncmp(vetor_agenda[i].data,dia,2) || dia_switch) && !strcmp(vetor_agenda[i].data + 3, mes)) {
+            qaniver++;
+            printf("\n%s\n%s | %s | %s | %s\n", vetor_agenda[i].nome, vetor_agenda[i].data,
+                vetor_agenda[i].celular, vetor_agenda[i].twitter, vetor_agenda[i].facebook);
+        }
+    }
+    printf("\n%d aniversariantes correspondentes\n\n", qaniver);
+}
+
+void aniversariantes_data(s_contato vetor_agenda[SIZE]) {
+    printf("Consultar aniversariantes de uma data (dia/mes)\n");
+    char data[6] = "";
+    adquirir_data(data);
+    if (!strcmp(data, "")) {
+        printf("\nConsulta cancelada!\n");
+        return;
+    }
+    char dia[3], mes[3];
+    strncpy(dia, data, 2);
+    dia[2] = '\0';
+    strcpy(mes, data + 3);
+    
+    printf("\nAniversariantes do dia %s:\n", data);
+    
+    consultar_aniversariantes(vetor_agenda, dia, mes);
+    
+}
+
+void aniversariantes_mes(s_contato vetor_agenda[SIZE]) {
+    char mes[BUFSIZ];
+    printf("Consultar aniversariantes por mes\n\nInforme o mes no formato mm "
+            "(ex: 05)\nou qualquer outra entrada para cancelar:");
+    fgets(mes, BUFSIZ, stdin);
+    strtok(mes, "\n");
+    if (isdigit(mes[0]) && isdigit(mes[1]) && mes[2] == '\0' && atoi(mes) > 0 && atoi(mes) < 13) {
+        printf("\nAniversariantes do mes:\n");
+        consultar_aniversariantes(vetor_agenda, "00", mes);
+    }
+}
+
+void aniversariantes_inicial(s_contato vetor_agenda[SIZE]) {
+    int i, qaniver = 0;
+    char inicial[BUFSIZ], chave1, chave2;
+    printf("Consultar aniversariantes pela letra inicial do nome\n\n"
+            "Informe um caractere para procurar como inicial, ou qualquer outra entrada para sair: ");
+    fgets(inicial, BUFSIZ, stdin);
+    strtok(inicial, "\n");
+    if (strlen(inicial) == 1) {
+        chave1 = toupper(inicial[0]);
+        for (i = 0; i < SIZE; i++) {
+            chave2 = toupper(vetor_agenda[i].nome[0]);
+            if (chave1 == chave2) {
+                qaniver++;
+                printf("\n%s - %s", vetor_agenda[i].nome, vetor_agenda[i].data);
+                if (!strcmp(vetor_agenda[i].data, "")) printf("data de anviersario desconhecida");
+            }
+        }
+        printf("\n\n%d entradas correspondentes\n\n", qaniver);
+    }
+}
+
+void mostrar_agenda_mes(s_contato vetor_agenda[SIZE]) {
+    
+    s_contato temp[SIZE],hold;
+    int i, j, key1, key2;
+    
+    for (i = 0; i < SIZE; i++ ) {
+        temp[i] = vetor_agenda[i];
+    }
+    for (i = 0; i < SIZE - 1; i++) {
+        for ( j = 0 ; j < SIZE - 1 - i; j++) {
+            key1 = atoi(temp[j].data + 3);
+            key2 = atoi(temp[j+1].data + 3);
+            if (key2 < key1) {
+                hold = temp[j];
+                temp[j] = temp[j+1];
+                temp[j+1] = hold;
+            }
+        }
+    }
+    for (i = 0; i < SIZE; i++) {
+        if (strcmp(temp[i].nome,"")) {
+            printf("\n%s\n%s | %s | %s | %s\n", temp[i].nome, temp[i].data,
+                    temp[i].celular, temp[i].twitter, temp[i].facebook);
+        }
+    }
 }
