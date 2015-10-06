@@ -4,11 +4,13 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Arquivos de Cabeçalho"
                    projectFiles="true">
+      <itemPath>funcoes_agenda.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Arquivos de Código-Fonte"
                    projectFiles="true">
       <itemPath>agenda.c</itemPath>
+      <itemPath>funcoes_agenda.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Arquivos de Recurso"
@@ -38,6 +40,10 @@
       </compileType>
       <item path="agenda.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="funcoes_agenda.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="funcoes_agenda.h" ex="false" tool="3" flavor2="0">
+      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -60,6 +66,10 @@
         </asmTool>
       </compileType>
       <item path="agenda.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="funcoes_agenda.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="funcoes_agenda.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

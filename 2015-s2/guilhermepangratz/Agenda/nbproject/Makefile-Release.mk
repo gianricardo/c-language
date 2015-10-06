@@ -35,7 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/agenda.o
+	${OBJECTDIR}/agenda.o \
+	${OBJECTDIR}/funcoes_agenda.o
 
 
 # C Compiler Flags
@@ -66,6 +67,11 @@ ${OBJECTDIR}/agenda.o: agenda.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/agenda.o agenda.c
+
+${OBJECTDIR}/funcoes_agenda.o: funcoes_agenda.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/funcoes_agenda.o funcoes_agenda.c
 
 # Subprojects
 .build-subprojects:
