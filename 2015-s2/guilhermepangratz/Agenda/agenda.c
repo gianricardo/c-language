@@ -35,6 +35,7 @@ void alocar_contato(s_contato vetor_agenda[SIZE], s_contato contato); /*aloca um
 void mostrar_agenda_nome(s_contato vetor_agenda[SIZE], int a, int b);
 int gravar(s_contato vetor_agenda[SIZE]); /*grava os dados do vetor de contatos no arquivo*/
 void excluir_pelo_nome(s_contato vetor_agenda[SIZE]);/*excluir um contato pelo nome*/
+void alterar_pelo_nome(s_contato vetor_agenda[SIZE]);/*Selecionar um contato pelo nome e alterar*/
 
 /*Fim dos protótipos*/
 
@@ -51,7 +52,9 @@ int main() {
             case 2 :
                 excluir_pelo_nome(contatos);
                 break;
-            case 3 : break;
+            case 3 : 
+                alterar_pelo_nome(contatos);
+                break;
             case 4 : break;
             case 5 : break;
             case 6 : break;
@@ -76,7 +79,9 @@ int menu(){
     
     int valor;
     
-    printf("1 - Cadastrar pessoa na agenda de contato (Nome, Dia de aniversario, Celular, Twitter e facebook)\n"
+    printf("-----------------------------------------------------------------------------------------------------\n"
+            "MENU:\n"
+            "1 - Cadastrar pessoa na agenda de contato (Nome, Dia de aniversario, Celular, Twitter e facebook)\n"
             "2 - Excluir pessoa a partir do nome\n"
             "3 - Alterar dados a partir do nome\n"
             "4 - Consultar aniversariantes de uma data (dia e mês)\n"
@@ -90,7 +95,7 @@ int menu(){
     char buf_opcao[BUFSIZ];
     fgets(buf_opcao, BUFSIZ, stdin);
     
-    printf("\n");
+    printf("\n----------------------------------------------------------------------------------------------------\n");
     return (buf_opcao[0] - '0');
 }
 
@@ -443,5 +448,121 @@ void excluir_pelo_nome(s_contato vetor_agenda[SIZE]){
             strcpy(vetor_agenda[SIZE - 1].twitter, "");
         }
     }
+    
+}
+
+void alterar_pelo_nome(s_contato vetor_agenda[SIZE]) {
+    printf("\n\nALTERAR CONTATO:\n");
+    int teste, i, chave_i = -1, chave_j = -1, q = 0;
+    char buf_nome[100];
+    adquirir_nome(buf_nome);
+    if (!strcmp(buf_nome, "*")) return;
+    for (i = 0; i < SIZE; i++) {
+        if (!strcmp(buf_nome,vetor_agenda[i].nome)) {
+            if (chave_i == -1) {
+                chave_i = i;
+                chave_j = i;
+            }
+            if (chave_i != -1) chave_j = i;
+            q++;
+        }
+    }
+    printf("\n%d entradas correspondentes:\n", q);
+    
+    if (q > 0) {
+        mostrar_agenda_nome(vetor_agenda, chave_i, chave_j+1);
+    } else {
+        printf("\nNenhum contato correspondente para ser editado!\n");
+        return;
+    }
+    char opcao[BUFSIZ];
+    while(1){
+        teste = 0;
+        printf("\n-> -1 para cancelar\n"
+            "-> maior que zero para apagar o contato correspondente desejado (EX:"
+            " 1 para editar o primeiro contato com nome igual)\nOpcao desejada: ");
+        fgets(opcao, BUFSIZ, stdin);
+        strtok(opcao, "\n");
+        i = 0;
+        if (!strcmp(opcao, "-1")){
+            printf("CANCELADO\n\n");
+            return;
+        }
+        while (opcao[i] != '\0') {
+            if(!isdigit(opcao[i])){
+                printf("OPCAO INVALIDA!\n");
+                teste = 1;
+                break;
+            }
+            i++;
+        }
+        if (teste) continue;
+        if (atoi(opcao) >= -1 && atoi(opcao) != 0 && atoi(opcao) <= q) break;
+        printf("%d", atoi(opcao));
+        printf("OPCAO INVALIDA!\n");
+    }
+    
+    chave_i += atoi(opcao) - 1;
+    char alterar[BUFSIZ];
+    s_contato hold;
+    
+    printf("\nAlterar o nome?\n"
+           "somente ENTER para alterar; qualquer outra entrada para manter: ");
+    if(!strcmp(fgets(alterar, BUFSIZ, stdin), "\n")) {
+        adquirir_nome(hold.nome);
+        if (!strcmp(hold.nome, "*")) { 
+            printf("\nalteracao cancelada\n");
+            return;
+        }
+        strcpy(vetor_agenda[chave_i].nome, hold.nome);
+    }
+    printf("\nAlterar data de aniversario?\n"
+           "somente ENTER para alterar; qualquer outra entrada para manter: ");
+    if(!strcmp(fgets(alterar, BUFSIZ, stdin), "\n")) {
+        adquirir_data(hold.data);
+        strcpy(vetor_agenda[chave_i].data, hold.data);
+    }
+    printf("\nAlterar o celular?\n"
+           "somente ENTER para alterar; qualquer outra entrada para manter: ");
+    if(!strcmp(fgets(alterar, BUFSIZ, stdin), "\n")) {
+        adquirir_celular(hold.celular);
+        strcpy(vetor_agenda[chave_i].celular, hold.celular);
+    }
+    printf("\nAlterar o Twitter?\n"
+           "somente ENTER para alterar; qualquer outra entrada para manter: ");
+    if(!strcmp(fgets(alterar, BUFSIZ, stdin), "\n")) {
+        adquirir_celular(hold.twitter);
+        strcpy(vetor_agenda[chave_i].twitter, hold.twitter);
+    }
+    printf("\nAlterar o Facebook?\n"
+           "somente ENTER para alterar; qualquer outra entrada para manter: ");
+    if(!strcmp(fgets(alterar, BUFSIZ, stdin), "\n")) {
+        adquirir_celular(hold.facebook);
+        strcpy(vetor_agenda[chave_i].facebook, hold.facebook);
+    }
+    //agrupar as alterações em u mrepositorio
+    strcpy(hold.nome, vetor_agenda[chave_i].nome);
+    strcpy(hold.data, vetor_agenda[chave_i].data);
+    strcpy(hold.celular, vetor_agenda[chave_i].celular);
+    strcpy(hold.twitter, vetor_agenda[chave_i].twitter);
+    strcpy(hold.facebook, vetor_agenda[chave_i].facebook);
+    
+    //apagar o contato alterado da agenda para que ele seja reinserido no local correto
+    for (i = chave_i; (i < SIZE - 1) && strcmp(vetor_agenda[i].nome, "") ; i++) {
+        strcpy(vetor_agenda[i].nome, vetor_agenda[i + 1].nome);
+        strcpy(vetor_agenda[i].data, vetor_agenda[i + 1].data);
+        strcpy(vetor_agenda[i].celular, vetor_agenda[i + 1].celular);
+        strcpy(vetor_agenda[i].facebook, vetor_agenda[i + 1].facebook);
+        strcpy(vetor_agenda[i].twitter, vetor_agenda[i + 1].twitter);
+    }
+    strcpy(vetor_agenda[SIZE - 1].nome, "");
+    strcpy(vetor_agenda[SIZE - 1].data, "");
+    strcpy(vetor_agenda[SIZE - 1].celular, "");
+    strcpy(vetor_agenda[SIZE - 1].facebook, "");
+    strcpy(vetor_agenda[SIZE - 1].twitter, "");
+    printf("\n");
+
+    //realocar  o contato
+    alocar_contato(vetor_agenda, hold);
     
 }
