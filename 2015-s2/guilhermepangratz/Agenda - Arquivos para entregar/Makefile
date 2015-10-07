@@ -8,3 +8,7 @@ agenda.o: agenda.c
 	
 funcoes_agenda.o: funcoes_agenda.c
 	gcc -c funcoes_agenda.c
+
+#Gerar documentação usando o doxygen
+docs:
+	doxygen Doxyfile
