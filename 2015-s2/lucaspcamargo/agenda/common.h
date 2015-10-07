@@ -1,3 +1,10 @@
+/**
+ * @file common.h
+ * @author Lucas Camargo
+ * @date Oct 2015
+ * @brief File containing common functions.
+ */
+
 #include "stdlib.h"
 #include "stdio.h"
 

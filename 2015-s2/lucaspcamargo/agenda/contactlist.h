@@ -1,5 +1,8 @@
 /**
- * contactlist.h -- Defines a fixed-capacity contact list
+ * @file contactlist.h
+ * @author Lucas Camargo
+ * @date Oct 2015
+ * @brief File containing contact manipulation functions for a a fixed-capacity contact list.
  */
 
 #ifndef CONTACTLIST_H_INC
@@ -15,7 +18,9 @@
 // Utility
 #define self (*c)
 
-// Struct for list data that might store other things in the future
+/** 
+ * Struct for list data that might store other things in the future
+*/
 typedef struct clist_t_s {
   contact_t buf[CL_SIZE];
 } clist_t;

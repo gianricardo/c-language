@@ -1,5 +1,8 @@
 /**
- * main.c -- Contact list program - main file
+ * @file main.c
+ * @author Lucas Camargo
+ * @date Oct 2015
+ * @brief File containing main program logic.
  */
 
 #include <stdio.h>

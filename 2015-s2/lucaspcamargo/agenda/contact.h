@@ -1,3 +1,10 @@
+/**
+ * @file contact.h
+ * @author Lucas Camargo
+ * @date Oct 2015
+ * @brief File containing contact manipulation functions.
+ */
+
 #ifndef CONTACT_H_INC
 #define CONTACT_H_INC
 

@@ -11,11 +11,10 @@ To build:
 Example:
 mkdir build
 cd build
-cmake ..
-make
-
-To build with documentation, run cmake with the BUILD_DOCUMENTATION flag on:
 cmake -DBUILD_DOCUMENTATION=ON ..
-
-And then, to build the documentation, from the build folder:
+make
 make doc
+
+This will also build the documentation.
+
+Remember to install graphviz in addition to doxygen! Or doxygen will fail and cry...
