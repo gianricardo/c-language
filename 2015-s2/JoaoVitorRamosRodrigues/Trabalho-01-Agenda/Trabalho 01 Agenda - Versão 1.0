@@ -1,0 +1,66 @@
+/*********************************************
+*Aluno:João Vitor Ramos Rodrigues            *
+*Matricula:10102787                          *
+*Aluno:Soly Waltrick Antunes Neto            *
+*Matricula:11103781							             *
+*Curso:Engenharia Mecatrônica                *
+*Disciplina:Estruturas de Dados - EMB5603    *
+*Professor:Gian Ricardo Berkenbrock          *
+*Data:28/09/2015 - Segundo Semestre          *
+**********************************************/
+
+/*******INICIO DO PROGRAMA PRINCIPAL**********/
+
+#include <stdio.h>//biblioteca de funções padrão C99
+#include <stdbool.h>//biblioteca de funções Booleanas 
+#include <string.h>//biblioteca de funções para manipulação de string
+#include <stdlib.h>//biblioteca de funções para alocação de memoria,controle de processos entre outras
+
+
+void cadastro_pessoa(struct agenda_de_contatos *agenda);
+
+	
+typedef struct agenda_de_contatos{
+		char nome[];
+		int dia;
+		int mes;
+		int ano;
+		int celular;
+		char twitter[];
+		char facebook[];
+}agendac;
+
+int main( void )
+{
+	int i;
+	for(i=0;i<30;i++){
+		agendac *ptra;
+		agendac agenda[30];
+		ptra = &agenda[i];	
+		cadastro_pessoa(ptra);
+		printf("\n");
+	
+		
+	}
+	
+	
+	return 0;
+}
+
+
+void cadastro_pessoa(struct agenda_de_contatos *agenda){
+	
+	printf("insira o nome do bipede a ser cadastrado\n");
+	gets(agenda->nome);
+	printf("insira respectivamente dia, mes e ano de nascimento\n");
+	scanf("%2d",&agenda->dia);
+	scanf("%2d",&agenda->mes);
+	scanf("%4d",&agenda->ano);
+	printf("insira o link do twitter\n");
+	scanf("%s",&agenda->twitter); //arrumar o twitter
+	printf("insira o telefone celular da cria do inferno\n");
+	scanf("%11d",&agenda->celular);
+	printf("insira o link do facebook\n");
+	scanf("%s",&agenda->facebook);
+	
+}
