@@ -1,0 +1,21 @@
+====================
+  Contact List App
+====================
+by Lucas Camargo
+
+To build:
+ - Create a build directory "build"
+ - Run cmake for this directory
+ - Run make
+ 
+Example:
+mkdir build
+cd build
+cmake ..
+make
+
+To build with documentation, run cmake with the BUILD_DOCUMENTATION flag on:
+cmake -DBUILD_DOCUMENTATION=ON ..
+
+And then, to build the documentation, from the build folder:
+make doc
