@@ -1,0 +1,165 @@
+#include "tda_agenda.h"
+
+void imprime_menu(){
+
+    printf("Bem Vindo\nInsira\n1 Para cadastrar novo contato.\n");
+    printf("2 Para excluir pessoas pelo nome.\n");
+    printf("3 Para alterar dados a partir do nome.\n");
+    printf("4 Para consultar aniversariantes de uma data (dia e mes).\n");
+    printf("5 Para consultar aniversariantes por mes.\n");
+    printf("6 Para consultar aniversariantes pela letra inicial do nome.\n");
+    printf("7 Para mostrar toda a agenda ordenada por nome.\n");
+    printf("8 Para mostrar toda agenda ordenada pelo mes.\n");
+    printf("9 Para sair.\n");
+
+}
+
+
+void cadastro_pessoa(struct agenda_de_contatos *agenda){
+
+	printf("insira o nome a ser cadastrado\n");
+	scanf(" %[^\n]s", &agenda->nome);
+	printf("insira respectivamente dia, mes e ano de nascimento\n");
+	scanf("%2d",&agenda->dia);
+	scanf("%2d",&agenda->mes);
+	scanf("%4d",&agenda->ano);
+    printf("insira o telefone celular\n");
+	scanf("%11d",&agenda->celular);
+	printf("insira o link do twitter\n");
+	scanf("%s",&agenda->twitter);
+	printf("insira o link do facebook\n");
+	scanf("%s",&agenda->facebook);
+
+}
+
+void excluir_contato(struct agenda_de_contatos *agenda, int n){
+
+    memset(agenda[n].nome,0,sizeof(agenda->nome));
+    memset(agenda[n].twitter,0,sizeof(agenda->twitter));
+    memset(agenda[n].facebook,0,sizeof(agenda->facebook));
+    agenda[n].celular = 0;
+    agenda[n].ano = 0;
+    agenda[n].mes = 0;
+    agenda[n].dia = 0;
+}
+
+void altera_dados(struct agenda_de_contatos *agenda, int busca){
+    agendac *auxaltera;
+    auxaltera = &agenda[busca];
+    excluir_contato(agenda, busca);
+    cadastro_pessoa(auxaltera);
+}
+
+void busca_dm(struct agenda_de_contatos *agenda, int dia, int mes, int maxi){
+    int i;
+    for(i=0;i<maxi; i++){
+        if(agenda[i].mes == mes){
+            if(agenda[i].dia == dia)
+                printf("%s", agenda[i].nome);
+        }
+
+    }
+
+}
+
+void busca_mes(struct agenda_de_contatos *agenda, int mes, int maxi){
+    int i;
+    for(i=0; i<maxi; i++){
+        if(agenda[i].mes == mes){
+            printf("%s", agenda[i].nome);
+        }
+    }
+
+}
+
+void mostra_nome(struct agenda_de_contatos *agenda,int maxi){
+
+    int k,w;
+	agendac aux1,aux2;
+
+	for(k=0;k<maxi;k++){
+		for(w=1;w<maxi;w++){
+			if(agenda[w].nome<agenda[w-1].nome){
+				aux1=agenda[w-1];
+				aux2=agenda[w];
+				agenda[w-1] = aux2;
+				agenda[w] = aux1;
+
+			}
+		}
+	}
+	for(k=0;k<maxi;k++){
+        printf("%s\n", agenda[k].nome);
+        printf("%d/%d/%d\n", agenda[k].dia, agenda[k].mes, agenda[k].ano);
+        printf("%d\n", agenda[k].celular);
+        printf("%s\n", agenda[k].twitter);
+        printf("%s\n\n", agenda[k].facebook);
+	}
+
+}
+
+void mostra_mes(struct agenda_de_contatos *agenda,int maxi){
+
+    int k,w;
+	agendac aux1,aux2;
+
+	for(k=0;k<maxi;k++){
+		for(w=1;w<maxi;w++){
+			if(agenda[w].mes<agenda[w-1].mes){
+				aux1=agenda[w-1];
+				aux2=agenda[w];
+				agenda[w-1]=aux2;
+				agenda[w]=aux1;
+
+			}
+		}
+	}
+	for(k=0;k<maxi;k++){
+        printf("%s\n", agenda[k].nome);
+        printf("%d/%d/%d\n", agenda[k].dia, agenda[k].mes, agenda[k].ano);
+        printf("%d\n", agenda[k].celular);
+        printf("%s\n", agenda[k].twitter);
+        printf("%s\n\n", agenda[k].facebook);
+	}
+
+}
+
+int busca_nome(struct agenda_de_contatos *agenda, int n){
+    int i;
+    char nome[30];
+    scanf(" %[^\n]s", &nome);
+
+    for(i=0;i<n;i++){
+
+        if(strcmp(nome, agenda[i].nome)==0){
+            return i;
+        }
+    }
+
+}
+
+void envia_final(struct agenda_de_contatos *agenda, int i, int n){
+
+    agendac aux;
+    aux = agenda[n];
+    agenda[n]=agenda[i];
+    agenda[i]=aux;
+    i++;
+    for(i;i<n-1;i++){
+        agenda[i]=agenda[i+1];
+    }
+    excluir_contato(agenda, n);
+
+}
+
+void imprime_nome(struct agenda_de_contatos *agenda, int maxi){
+    char c;
+    int i;
+    scanf(" %c", &c);
+    for(i=0; i<maxi; i++){
+        if(toupper(c)==toupper(agenda[i].nome[0])){
+            printf("%s\n", agenda[i].nome);
+            printf("%d %d %d\n", agenda[i].dia, agenda[i].mes, agenda[i].ano);
+        }
+    }
+}
