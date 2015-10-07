@@ -1,0 +1,21 @@
+Executar o Makefile
+Programa inicializa com mostrando todas as Funções 
+1 - Para cadastrar novo contato;
+	# Função pede ao usuario todos os dados para criar um novo contato;
+2 -  Para excluir pessoas pelo nome;
+	# Função que encontra o contato desejado e o exclui;
+3 -  Para alterar dados a partir do nome;
+	# Função que encontra o contato desejado e o usuario altera todos os dados dele;
+4 -  Para consultar aniversariantes de uma data (dia e mes);
+	# Função que encontra o contato(s) com o dia/mes desejado pelo usuario;
+5 -  Para consultar aniversariantes por mes;
+	# Função que encontra o contato(s) com o mes desejado pelo usuario;
+6 - Para consultar aniversariantes pela letra inicial do nome;
+	# Função que encontra os aniversariantes com a letra inicial que o usuario escolheu;
+7 - Para mostrar toda a agenda ordenada por nome;
+	# Função que ordena a agenda pelo nome;
+8 - Para mostrar toda agenda ordenada pelo mes;
+	# Função que ordena a agenda pelo mes;
+9 -  Para sair.
+	# Encerra o programa; 	
+
