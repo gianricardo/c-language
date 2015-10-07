@@ -1,10 +1,6 @@
-all: agenda.exe
-
-hello.exe: agenda.o
-	gcc -o agenda.exe agenda.o
-
-hello.o: agenda.c
-	gcc -c agenda.c
-
-clean:
-	rm agenda.o agenda.exe
+#compila o programa
+first: agenda.c
+	gcc agenda.c -o agenda
+#gera a documentação
+docs: 
+	doxygen Doxyfile

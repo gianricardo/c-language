@@ -3,13 +3,18 @@
 #include <string.h>
 #include <stdlib.h>
 
-FILE *AbreAgenda(char caminho[30], char modo){
-
 /**
 Função para abrir o arquivo agenda.txt, em modos diferentes.
-caminho é a string que contem o nome do arquivo, e modo é referente ao jeito que vai abrrir o arquivo;
+
+@param caminho é a string que contem o nome do arquivo, e 
+@param modo é referente ao jeito que vai abrrir o arquivo;
 testa se o arquivo existe, e pode ser aberto, caso contrario imprime a seguinte mensagem de erro;
+
+@return um ponteiro para o arquivo.
 */
+FILE *AbreAgenda(char caminho[30], char modo){
+
+
 
   FILE *agenda;
   switch (modo){
