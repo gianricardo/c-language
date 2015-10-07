@@ -214,6 +214,7 @@ void adquirir_celular(char celular[13]){ /*Adquire um numero de celualr valido e
 }
 
 void adquirir_twitter(char twitter[16]){ /*Adquire um twitter nickname e o retorna*/
+    strcpy(twitter, "");
     char buf[BUFSIZ] = "                ";
     printf("\nTWITTER");
     while (strlen(buf) > 15){
@@ -226,6 +227,7 @@ void adquirir_twitter(char twitter[16]){ /*Adquire um twitter nickname e o retor
 }
 
 void adquirir_facebook(char facebook[30]){ /*Adquire um facebook nickname e o retorna*/
+    strcpy(facebook, "");
     char buf[BUFSIZ] = "                                         ";
     printf("\nFACEBOOK");
     while (strlen(buf) > 30){

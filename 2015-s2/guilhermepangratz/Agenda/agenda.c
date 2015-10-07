@@ -1,13 +1,16 @@
-/* 
- * File:   agenda.c
- * Author: GuilhermeAugusto
- *
- * Created on 15 de Setembro de 2015, 16:22
+/**
+ * Incluir o cabeçalho que contem a estrutura para os contatos e as funções 
+ * necessarias para lidar com eles de maneira a formar uma agenda.
+ * @return 
  */
+#include "funcoes_agenda.h" 
 
-#include "funcoes_agenda.h"
-
-/*Inicio da funcao principal*/
+/**
+ * Inicio da função principal
+ * A função principal trata da chama das funções de acordo com as opções
+ * oferecidas no menu, e as escolhas do usuario
+ * @return 
+ */
 int main() { 
     
     s_contato contatos[SIZE];
@@ -45,4 +48,4 @@ int main() {
     }
     
     return 0;
-} /*Fim da funcao principal*/
+} /**Fim da funcao principal*/
