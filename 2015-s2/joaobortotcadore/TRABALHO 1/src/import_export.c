@@ -8,11 +8,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "import_export.h"
 
 void exporta_backup(agenda_t *agenda, FILE * arquivo)
 {
-	if((arquivo = fopen("Agenda.txt","wr+")) == NULL)
+	if((arquivo = fopen("Agenda.txt","r+")) == NULL)
 	    {
 		printf("Erro na leitura da agenda.\n");
 		exit(-1);
@@ -35,7 +36,7 @@ void importa_backup(agenda_t *agenda, FILE * arquivo)
 {
 	agenda->qnt_agenda=-1;
 	
-	if((arquivo = fopen("Agenda.txt","r")) == NULL)
+	if((arquivo = fopen("Agenda.txt","r+")) == NULL)
 	    {
 		printf("Erro na leitura da agenda.\n");
 		exit(-1);
@@ -49,5 +50,10 @@ void importa_backup(agenda_t *agenda, FILE * arquivo)
 		fscanf(arquivo,"%s%d/%d/%d\n%d\n%s%s",agenda->contato[i].nome,&agenda->contato[i].dia, &agenda->contato[i].mes, &agenda->contato[i].ano, &agenda->contato[i].celular, agenda->contato[i].twitter, agenda->contato[i].facebook);
 		i++;
 	}
-	
+	int tamanho;
+	for(i=0; i < TAM_AGENDA; i++)
+	{
+		tamanho=strlen(agenda->contato[i].nome);
+		agenda->contato[i].nome[tamanho] = '\n';
+	}
 }
