@@ -1,0 +1,62 @@
+#include "tda_agenda.h"
+#include "tda_funcoes.h"
+
+int main( void ){
+
+    agendac *ptra;
+	agendac agenda[tam];
+	int i=0, busca, escolha, dia, mes;
+	imprime_menu();
+    scanf("%d",&escolha);
+    while(escolha!=9){
+        switch(escolha){
+        case 1:
+            if(i<30){
+                ptra = &agenda[i];
+                cadastro_pessoa(ptra);
+                printf("\n");
+                i++;
+            }
+        break;
+        case 2:
+            printf("Insira o nome a ser excluido:\n");
+            busca = busca_nome(agenda,i);
+            envia_final(agenda, busca, tam);
+        break;
+		case 3:
+		    printf("Insira o nome para o contato que voce deseja editar:\n");
+		    busca = busca_nome(agenda, i);
+		    altera_dados(agenda, busca);
+        break;
+        case 4:
+            printf("Insira o dia do aniversario do contato a ser exibido:\n");
+            scanf("%2d", &dia);
+            printf("Insira o mes do aniversario do contato a ser exibido:\n");
+            scanf("%2d", &mes);
+            busca_dm(agenda, dia, mes, i);
+        break;
+        case 5:
+            printf("Insira o mes do aniversario do contato a ser exibido:\n");
+            scanf("%2d", &mes);
+            busca_mes(agenda, mes, i);
+        break;
+        case 6:
+            printf("Insira a primeira letra dos nomes a serem exibidos:\n");
+            imprime_nome(agenda, i);
+        break;
+        case 7:
+            mostra_nome(agenda, i);
+        break;
+        case 8:
+            mostra_mes(agenda, i);
+        break;
+        }
+        printf("\n");
+        imprime_menu();
+        printf("\n");
+        scanf("%d",&escolha);
+        printf("\n");
+
+    }
+	return 0;
+}
