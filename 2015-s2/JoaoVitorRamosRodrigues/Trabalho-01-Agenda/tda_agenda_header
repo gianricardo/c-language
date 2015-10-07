@@ -1,0 +1,67 @@
+#ifndef AGENDA_H
+#define AGENDA_H
+
+// AGENDA_H
+#include <stdio.h>//biblioteca de funções padrão C99
+#include <stdbool.h>//biblioteca de funções Booleanas
+#include <string.h>//biblioteca de funções para manipulação de string
+#include <stdlib.h>//biblioteca de funções para alocação de memoria,controle de processos entre outras
+#define tam 30
+
+
+typedef struct agenda_de_contatos{
+		char nome[30];
+		int dia;
+		int mes;
+		int ano;
+		int celular;
+		char twitter[30];
+		char facebook[30];
+}agendac;
+
+/** Funcao para cadastrar novo contato
+ * Deve receber um ponteiro da agenda
+ */
+void cadastro_pessoa(struct agenda_de_contatos *agenda);
+/** Funcao para excluir um contato
+ * Deve receber um ponteiro da agenda e o tamanho dela
+ */
+void excluir_contato(struct agenda_de_contatos *agenda, int i);
+/** Funcao para alterar um contato da agenda
+ * Deve receber um ponteiro da agenda e a posicao do contato desejado
+ */
+void altera_dados(struct agenda_de_contatos *agenda, int busca);
+/** Funcao para buscar um contato de acordo com o dia e o mes de nascimento e mostrar
+ * Deve receber um ponteiro da agenda, o dia, o mes e o tamanho maximo dela
+ */
+void busca_dm(struct agenda_de_contatos *agenda, int dia, int mes, int maxi);
+/** Funcao para buscar e mostrar os aniversariantes de um determinado mes
+ * Deve receber um ponteiro de agenda, o mes e o tamanho maximo dela
+ */
+void busca_mes(struct agenda_de_contatos *agenda, int mes, int maxi);
+/** Funcao para mostrar a agenda ordenada de acordo com o nome
+ * Deve receber um ponteiro da agenda e o tamanho dela
+ */
+void mostra_nome(struct agenda_de_contatos *agenda, int maxi);
+/** Funcao para mostra a agenda ordenada pelos meses de aniversario
+ * Deve receber um ponteiro da agenda e o tamanho dela
+ */
+void mostra_mes(struct agenda_de_contatos *agenda, int maxi);
+/** Funcao para imprimir o menu inicial
+ */
+void imprime_menu();
+/** Funcao para exercer uma busca a partir do nome
+ * Deve receber um ponteiro da agenda e o tamanho dela
+ * Retornar um inteiro com a posicao da agenda
+ */
+int busca_nome(struct agenda_de_contatos *agenda, int n);
+/** Funcao para enviar o contato desejado para o final da agenda
+ *  Deve receber um ponteiro da agenda, a posicao do contato desejado e o tamanho da agenda
+ */
+void envia_final(struct agenda_de_contatos *agenda, int i, int n);
+/** Funcao para imprimir o nome do contato desejado
+ * Deve receber um ponteiro da agenda e o tamanho dela
+ */
+void imprime_nome(struct agenda_de_contatos *agenda, int maxi);
+
+#endif
