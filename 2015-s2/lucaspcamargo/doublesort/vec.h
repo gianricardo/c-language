@@ -242,8 +242,10 @@ int vec_store(dblvec_t * p, const char * filename)
   
   printf("Writing %s...\n", filename);
  
-  long estChars = p->c * 12; // estimate necessary space to avoid reallocs
-  long onePercent = p->c / 100l;
+  long total = p->c;
+  long estChars = total * 12; // estimate necessary space to avoid reallocs
+  long onePercent = total / 100l;
+  int currPercent = 0;
   
   buf_t buf;
   buf_init_n(&buf, estChars);
@@ -254,10 +256,23 @@ int vec_store(dblvec_t * p, const char * filename)
   printf("0%% ");
   fflush(stdout); // make sure it goes to screen
   
-  for(long i = 0; i < p->c; i++)
+  for(long i = 0; i < total; i++)
   {
-    sprintf(buf.v + buf.c, "%lf\n%n", p->v[i], &written);
+    
+    if(total - i >= 10)
+    {
+      // we can do 10 at a time for speed
+      sprintf(buf.v + buf.c, "%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%n", 
+	      p->v[i], p->v[i+1], p->v[i+2], p->v[i+3], p->v[i+4], p->v[i+5], p->v[i+6], p->v[i+7], p->v[i+8], p->v[i+9], &written);
+      i += 9; // we add the nine extra we wrote
+    }
+    else
+    {
+      // let's write only one
+      sprintf(buf.v + buf.c, "%lf\n%n", p->v[i], &written);
+    }
     buf.c += written;
+    
     if(buf.cap - buf.c < REQ_FREE)
     {
       long newSize = buf.cap + REQ_FREE * FREE_FACTOR;
@@ -265,9 +280,11 @@ int vec_store(dblvec_t * p, const char * filename)
       buf_resize(&buf, newSize); // avoid frequent reallocs by using a factor
     }
     
-    if((i%onePercent) == 0)
+    int nP = i / onePercent;
+    if(currPercent != nP)
     {
-      printf("\r%ld%% ", i / onePercent); // print percentage
+      currPercent = nP;
+      printf("\r%d%% ", currPercent); // print percentage
       fflush(stdout); // make sure it goes to screen
     }
   }
@@ -284,6 +301,54 @@ int vec_store(dblvec_t * p, const char * filename)
   
   buf_destroy(&buf);
   return ret;
+}
+
+int vec_store_v2(dblvec_t * p, const char * filename)
+{
+  printf("Writing %s...\n", filename);
+ 
+  FILE *f = fopen(filename, "w");
+  if(!f)
+    return -1;
+  
+  long total = p->c;
+  long onePercent = total / 100l;
+  int currPercent = 0;
+  
+  printf("0%% ");
+  fflush(stdout); // make sure it goes to screen
+  
+  for(long i = 0; i < total; i++)
+  {
+    
+    if(total - i >= 10)
+    {
+      // we can do 10 at a time for speed
+      fprintf(f, "%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n%lf\n", 
+	      p->v[i], p->v[i+1], p->v[i+2], p->v[i+3], p->v[i+4], p->v[i+5], p->v[i+6], p->v[i+7], p->v[i+8], p->v[i+9]);
+      i += 9; // we add the nine extra we wrote
+    }
+    else
+    {
+      // let's write only one
+      fprintf(f, "%lf\n", p->v[i]);
+    }
+    
+    int nP = i / onePercent;
+    if(currPercent != nP)
+    {
+      currPercent = nP;
+      printf("\r%d%% ", currPercent); // print percentage
+      fflush(stdout); // make sure it goes to screen
+    }
+  }
+  
+  printf("\r100%%  \n");
+  fclose(f);
+  
+  printf("Buffer ready. Writing to file...\n");
+  
+  return 0;
 }
 
 #endif

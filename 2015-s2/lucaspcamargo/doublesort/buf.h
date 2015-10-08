@@ -84,7 +84,7 @@ int buf_load(buf_t * p, const char * filename)
   
   fseek(f, 0, SEEK_END);
   long fs = ftell(f);
-  fseek(f, 0, SEEK_SET);
+  rewind(f);
 
   buf_resize(p, fs + 1);
   if(fread(p->v, fs, 1, f) != 1)
