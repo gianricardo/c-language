@@ -272,7 +272,7 @@ int vec_store(dblvec_t * p, const char * filename)
     }
   }
   
-  printf("100%%  \n");
+  printf("\r100%%  \n");
   fflush(stdout);
   
   buf.v[buf.c] = '\0';
