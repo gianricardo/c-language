@@ -1,11 +1,24 @@
+/**
+ * @file buf.h
+ * @author Lucas Camargo
+ * @date Oct 2015
+ * @brief A byte buffer with auxiliary functions.
+ */
+
 #ifndef BUF_H
 #define BUF_H
 
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * Initial buffer size
+ */
 #define BUF_DEFAULT_CAPACITY 512
 
+/**
+ * Holds the data for a character buffer
+ */
 typedef struct buf_t
 {
   char * v; // the memory buffer
@@ -13,6 +26,9 @@ typedef struct buf_t
   long cap; // capacity in chars
 } buf_t;
 
+/**
+ * Initializes a buffer with capacity n
+ */
 void buf_init_n(buf_t * p, long size)
 {
   p->v = malloc(size);
@@ -20,11 +36,17 @@ void buf_init_n(buf_t * p, long size)
   p->cap = size;
 }
 
+/**
+ * Initializes a buffer with default capacity
+ */
 void buf_init(buf_t * p)
 {
   buf_init_n(p, BUF_DEFAULT_CAPACITY);
 }
 
+/**
+ * Destroys a buffer
+ */
 void buf_destroy(buf_t * p)
 {
   free(p->v);
@@ -33,32 +55,9 @@ void buf_destroy(buf_t * p)
   p->cap = 0;
 }
 
-void buf_add(buf_t * p, char value)
-{
-  if(p->c == p->cap)
-  {
-    if( p->v = realloc(p->v, p->cap * 2 ) )
-    {
-      p->cap *= 2;
-    }
-    else
-    {
-      printf("Out of memory...\n");
-      exit(-1);
-    }
-  }
-  
-  p->v[p->c] = value;
-  p->c++;
-}
-
-void buf_swap(buf_t * p, int ia, int ib)
-{
-  char swap = p->v[ia];
-  p->v[ia] = p->v[ib];
-  p->v[ib] = swap;
-}
-
+/**
+ * Sets the buffer capacity
+ */
 void buf_resize(buf_t * p, int size)
 {
   
@@ -75,6 +74,25 @@ void buf_resize(buf_t * p, int size)
   
 }
 
+/**
+ * Inserts a character into the buffer
+ */
+void buf_add(buf_t * p, char value)
+{
+  if(p->c == p->cap)
+  {
+    buf_resize(p, p->cap * 2);
+  }
+  
+  p->v[p->c] = value;
+  p->c++;
+}
+
+
+/**
+ * Loads the buffer from the file "filename"
+ * @returns Zero on success, something else on error
+ */
 int buf_load(buf_t * p, const char * filename)
 {
   FILE *f = fopen(filename, "rb");
@@ -96,6 +114,10 @@ int buf_load(buf_t * p, const char * filename)
   return 0;
 }
 
+/**
+ * Stores the buffer to the file "filename"
+ * @returns Zero on success, something else on error
+ */
 int buf_store(buf_t * p, const char * filename)
 {
   FILE *f = fopen(filename, "w");

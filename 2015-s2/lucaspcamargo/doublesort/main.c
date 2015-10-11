@@ -1,3 +1,10 @@
+/**
+ * @file main.c
+ * @author Lucas Camargo
+ * @date Oct 2015
+ * @brief Main program.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,6 +19,9 @@
 #include <string.h>
 #endif
 
+/**
+ * Begins program execution
+ */
 int main(int argc, char ** argv) {
   
   if(argc != 3)

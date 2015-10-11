@@ -1,3 +1,9 @@
+/**
+ * @file vec.h
+ * @author Lucas Camargo
+ * @date Oct 2015
+ * @brief A vector of doubles with auxiliary functions.
+ */
 #ifndef VEC_H
 #define VEC_H
 
@@ -11,7 +17,7 @@
 #define VEC_INITIAL_CAPACITY 128
 
 //  main optimization parameters
-#define VEC_MERGESORT_THR 1000
+#define VEC_MERGESORT_THR 20000
 #define VEC_BUBBLESORT_THR 20
 
 typedef struct dblvec_t
@@ -21,6 +27,9 @@ typedef struct dblvec_t
   long cap; // capacity in doubles
 } dblvec_t;
 
+/**
+ * Initializes the given vector
+ */
 void vec_init(dblvec_t * p)
 {
   p->v = malloc(sizeof(double) * VEC_INITIAL_CAPACITY);
@@ -28,6 +37,10 @@ void vec_init(dblvec_t * p)
   p->cap = VEC_INITIAL_CAPACITY;
 }
 
+
+/**
+ * Adds a value to the vector
+ */
 void vec_add(dblvec_t * p, double value)
 {
   if(p->c == p->cap)
@@ -47,6 +60,9 @@ void vec_add(dblvec_t * p, double value)
   p->c++;
 }
 
+/**
+ * Swaps two items in the vector
+ */
 void vec_swap(dblvec_t * p, long ia, long ib)
 {
   double swap = p->v[ia];
@@ -54,6 +70,10 @@ void vec_swap(dblvec_t * p, long ia, long ib)
   p->v[ib] = swap;
 }
 
+
+/**
+ * Bubblesort the given vector
+ */
 void vec_bubble(dblvec_t * p)
 {
   double swap;
@@ -72,6 +92,10 @@ void vec_bubble(dblvec_t * p)
   }
 }
 
+/**
+ * Partitions the subvector between lf and rt
+ * @return The index of the separatng element
+ */
 int vec_partition( double * p_buf, long lf, long rt) 
 {
   
@@ -95,6 +119,9 @@ int vec_partition( double * p_buf, long lf, long rt)
   return j;
 }
 
+/**
+ * Performs a quicksort on the subvector between indexes lf and rt
+ */
 void vec_quicksort(double * p_buf, long lf, long rt)
 {
   
@@ -109,8 +136,14 @@ void vec_quicksort(double * p_buf, long lf, long rt)
   
 }
 
+/**
+ * Sorts the subvector between indexes lf and rt, possibly using the scratch buffer 
+ */
 void vec_sort_smart(dblvec_t * p, double * scratch, long lf, long rt); // fwd def
 
+/**
+ * Sorts the subvector between indexes lf and rt, using the scratch buffer or transparently allocating a new one
+ */
 void vec_mergesort(dblvec_t * p, double * scratch, long lf, long rt)
 {
   long num = (rt-lf + 1);
@@ -196,11 +229,18 @@ void vec_sort_smart(dblvec_t * p, double * scratch, long lf, long rt)
   }
 }
 
+/**
+ * Sorts the vector in the best possible way
+ */
 void vec_sort(dblvec_t * p)
 {
   vec_sort_smart(p, NULL, 0, p->c - 1);
 }
 
+/**
+ * Loads the vectors of doubles from an ASCII file "filename"
+ * @returns Zero on success, something else on error
+ */
 int vec_load(dblvec_t * p, const char * filename)
 {
   printf("Reading %s...\n", filename);
@@ -235,6 +275,10 @@ int vec_load(dblvec_t * p, const char * filename)
   
 }
 
+/**
+ * Stores the vectors of doubles to an ASCII file "filename"
+ * @returns Zero on success, something else on error
+ */
 int vec_store(dblvec_t * p, const char * filename)
 {
   const int REQ_FREE = 1024 * 1024; // 1MB buffer space must be available at all times
@@ -302,7 +346,11 @@ int vec_store(dblvec_t * p, const char * filename)
   buf_destroy(&buf);
   return ret;
 }
-
+/**
+ * Stores the vectors of doubles to an ASCII file "filename".
+ * Slightly faster.
+ * @returns Zero on success, something else on error
+ */
 int vec_store_v2(dblvec_t * p, const char * filename)
 {
   printf("Writing %s...\n", filename);
