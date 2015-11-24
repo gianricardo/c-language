@@ -9,6 +9,7 @@ if(BUILD_DOCUMENTATION)
 
     set(doxyfile_in ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
     set(doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+    set(doxy_main_page ${PROJECT_SOURCE_DIR}/README.md)
 
     configure_file(${doxyfile_in} ${doxyfile} @ONLY)
 

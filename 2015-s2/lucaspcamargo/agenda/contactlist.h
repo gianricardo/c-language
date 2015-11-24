@@ -10,338 +10,112 @@
 
 // Uses contact datatype
 #include "contact.h"
-#include "stdio.h"
 
-// Fixed size for the list
+/**
+ * @brief Fixed size for the list
+ */
 #define CL_SIZE 30
 
-// Utility
-#define self (*c)
 
 /** 
- * Struct for list data that might store other things in the future
+ * @brief Struct for list data that might store other things in the future
 */
 typedef struct clist_t_s {
   contact_t buf[CL_SIZE];
 } clist_t;
 
 /**
- * Initializes the list object
+ * @brief Initializes the list object
  */
-void CListInit(clist_t * c)
-{
-  memset(c, 0, sizeof(clist_t));
-}
+void CListInit(clist_t * c);
 
 /**
- * Allocates space for a new object
+ * @brief Allocates space for a new object
  */
-clist_t * CListCreate()
-{
-  clist_t * newList = ALLOC_NEW(clist_t);
-  
-  CListInit(newList);
-  
-  return newList;
-}
+clist_t * CListCreate();
 
 /**
- * Deallocates object
+ * @brief Deallocates object
  */
-void CListDestroy(clist_t * c)
-{
-  free(c);
-}
+void CListDestroy(clist_t * c);
 
 /**
- * Get item from list
+ * @brief Get item from list
  */
-contact_t * CListGet(clist_t * c, int index)
-{
-  return &(self.buf[index]);
-}
+contact_t * CListGet(clist_t * c, int index);
 
 /**
- * Sets item on list
+ * @brief Sets item on list
  */
-void CListSet(clist_t * c, int index, contact_t val)
-{
-  (self.buf[index]) = val;
-}
-
-int CListRemove(clist_t * c, int index)
-{
-  ContactInit(&(self.buf[index]));
-}
-
+void CListSet(clist_t * c, int index, contact_t val);
 
 /**
- * Load list from file
+ * @brief Removes an item from the list
  */
-int CListLoad(clist_t * c, const char * filename)
-{
-  FILE * f = fopen(filename, "rb");
-  
-  if(f)
-  {    
-    int readCount = fread(c, sizeof(clist_t), 1, f);
-    fclose(f);
-    
-    if(readCount == 1)
-      return 0; // success
-    else
-    {
-      // did not read enough
-      memset(c, 0, sizeof(clist_t)); // clear list block
-      return -2;
-    }
-  }
-  else return -1; // could not open file
-}
+int CListRemove(clist_t * c, int index);
 
 /**
- * Store list in file
+ * @brief Load list from file
  */
-int CListStore(clist_t * c, const char * filename)
-{
-  
-  printf("Writing records to file [%s]\n", filename);
-  
-  FILE * f = fopen(filename, "w");
-  
-  if(f)
-  {
-    
-    int res = fwrite(c, sizeof(clist_t), 1, f);
-    fclose(f);
-    
-    if(res == 1)
-    {
-      return 0; // success
-    }
-    else
-    {
-      return -2; // write failure
-    }
-  }
-  else return -1; // could not open file
-  
-}
+int CListLoad(clist_t * c, const char * filename);
 
 /**
- * Print whole list
+ * @brief Store list in file
  */
-void CListPrint(clist_t * c, int printNums)
-{
-  int printed = 0;
-  printf("\n");
-  
-  for(int i = 0; i < CL_SIZE; i++)
-  {
-    if(!(*CListGet(c, i)).name[0])
-      continue;
-    
-    printed = 1;
-    
-    if(printNums) printf("#%d\n", i+1);
-    ContactPrint(CListGet(c, i));
-    printf("\n");
-    
-  }
-    if(!printed)
-      printf("No records to print.\n");
-}
+int CListStore(clist_t * c, const char * filename);
+/**
+ * @brief Print whole list
+ */
+void CListPrint(clist_t * c, int printNums);
 
 /**
- * Print people with this birthday
+ * @brief Print people with this birthday
  */
-void CListPrintBirthday(clist_t * c, int d, int m)
-{
-  int printed = 0;
-  printf("\n");
-  
-  for(int i = 0; i < CL_SIZE; i++)
-  {
-    if(!(*CListGet(c, i)).name[0])
-      continue;
-    
-    if((*CListGet(c, i)).birthDay != d || (*CListGet(c, i)).birthMonth != m)
-      continue;
-    
-    printed = 1;
-    
-    ContactPrint(CListGet(c, i));
-    printf("\n");
-    
-  }
-    if(!printed)
-      printf("No one born on this day.\n");
-}
+void CListPrintBirthday(clist_t * c, int d, int m);
 
 /**
- * Print people with this birthmonth
+ * @brief Print people with this birthmonth
  */
-void CListPrintBirthMonth(clist_t * c, int m)
-{
-  printf("\n");
-  int printed = 0;
-  
-  for(int i = 0; i < CL_SIZE; i++)
-  {
-    if(!(*CListGet(c, i)).name[0])
-      continue;
-    
-    if((*CListGet(c, i)).birthMonth != m)
-      continue;
-    
-    printed = 1;
-    
-    ContactPrint(CListGet(c, i));
-    printf("\n");
-    
-  }
-    if(!printed)
-      printf("No one born on this month.\n");
-}
+void CListPrintBirthMonth(clist_t * c, int m);
 
 /**
- * Print people with this initial
+ * @brief Print people with this initial
  */
-void CListPrintInitial(clist_t * c, char ch)
-{
-  printf("\n");
-  int printed = 0;
-  
-  for(int i = 0; i < CL_SIZE; i++)
-  {
-    if(!(toupper((*CListGet(c, i)).name[0]) == toupper(ch)))
-      continue;
-    
-    printed = 1;
-    
-    ContactPrint(CListGet(c, i));
-    printf("\n");
-    
-  }
-    if(!printed)
-      printf("No one has the initial %c.\n", toupper(ch));
-}
+void CListPrintInitial(clist_t * c, char ch);
 
 /**
- * Find first vacant index in the list
+ * @brief Find first vacant index in the list
  */
-int CListFindFree(clist_t * c)
-{
-  for(int i = 0; i < CL_SIZE; i++)
-  {
-    if(!(*CListGet(c, i)).name[0])
-      return i;
-  }
-  
-  return -1;
-}
+int CListFindFree(clist_t * c);
 
 /**
- * Counts how many records there are
+ * @brief Counts how many records there are
  */
-int CListCount(clist_t * c)
-{
-  int count = 0;
-  
-  for(int i = 0; i < CL_SIZE; i++)
-  {
-    if((*CListGet(c, i)).name[0])
-      count++;
-  }
-  
-  return count;
-}
+int CListCount(clist_t * c);
 
 /**
- * Returns true if list empty
+ * @brief Returns true if list empty
  */
-int CListEmpty(clist_t * c)
-{
-  return CListCount(c) == 0;
-}
+int CListEmpty(clist_t * c);
 
 /**
- * Returns true if list full
+ * @brief Returns true if list full
  */
-int CListFull(clist_t * c)
-{
-  return CListCount(c) == CL_SIZE;
-}
+int CListFull(clist_t * c);
+/**
+ * @brief Sorts list by name
+ */
+void CListSort(clist_t * c);
 
 /**
- * Sorts list by name
+ * @brief Sorts list by month
  */
-void CListSort(clist_t * c)
-{
-  contact_t swap;
-  int swapped = 1;
-  
-  while(swapped)
-  {
-    swapped = 0;
-    
-    for(int i = 0; i <(CL_SIZE-1); i++)
-    {
-      if(ContactCompare( &(self.buf[i]), &(self.buf[i+1]) ) > 0)
-      {
-	swap = self.buf[i];
-	self.buf[i] = self.buf[i+1];
-	self.buf[i+1] = swap;
-
-	swapped = 1;
-      }
-    }
-  }
-}
-
+void CListSortMonth(clist_t * c);
 
 /**
- * Sorts list by month
+ * @brief Gives list index corresponding to name
  */
-void CListSortMonth(clist_t * c)
-{
-  contact_t swap;
-  int swapped = 1;
-  
-  while(swapped)
-  {
-    swapped = 0;
-    
-    for(int i = 0; i <(CL_SIZE-1); i++)
-    {
-      if(self.buf[i].birthMonth > self.buf[i+1].birthMonth)
-      {
-	swap = self.buf[i];
-	self.buf[i] = self.buf[i+1];
-	self.buf[i+1] = swap;
+int CListFindName(clist_t * c, const char * name);
 
-	swapped = 1;
-      }
-    }
-  }
-}
-
-/**
- * Gives list index corresponding to name
- */
-int CListFindName(clist_t * c, const char * name)
-{
-  for(int i = 0; i <(CL_SIZE-1); i++)
-  {
-    if(!strcmp(CListGet(c, i)->name, name))
-      return i;
-  }
-  return -1;
-}
-
-/**
- * avoid pollution of preprocessor symbol space
- */
-#undef self
 
 #endif

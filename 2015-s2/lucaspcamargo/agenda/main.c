@@ -11,47 +11,47 @@
 #include "contactlist.h"
 
 /** 
- * Adds a contact 
+ * @brief Adds a contact 
  */
 void addContact(clist_t *);
 
 /** 
- * Remove a contact 
+ * @brief Remove a contact 
  */
 void removeByName(clist_t *);
 
 /** 
- * Alter a contact 
+ * @brief Alter a contact 
  */
 void alterByName(clist_t *);
 
 /** 
- * Lists contacts by given birthday
+ * @brief Lists contacts by given birthday
  */
 void listContactsBirthday(clist_t *);
 
 /** 
- * Lists contacts by given birthmonth
+ * @brief Lists contacts by given birthmonth
  */
 void listContactsMonth(clist_t *);
 
 /** 
- * Lists contacts by given name initial
+ * @brief Lists contacts by given name initial
  */
 void listContactsInitial(clist_t *);
 
 /** 
- * Lists contacts by name
+ * @brief Lists contacts by name
  */
 void listContactsOrderName(clist_t *);
 
 /** 
- * Lists contacts by birthday month
+ * @brief Lists contacts by birthday month
  */
 void listContactsOrderMonth(clist_t *);
 
 /**
- * Begins program execution
+ * @brief Begins program execution
  */
 int main() {
   
@@ -143,6 +143,7 @@ void addContact(clist_t * l)
   }
   else
   {
+    printf("Editing a new contact:\n");
     ContactInput(CListGet(l, CListFindFree(l)));
   } 
 }
@@ -154,6 +155,7 @@ void removeByName(clist_t * l)
   
   clearstdin();
   fgets(name, 30, stdin);
+  trim(name);
   
   int index = CListFindName(l, name);
   if(index >= 0)
@@ -172,6 +174,7 @@ void alterByName(clist_t * l)
   
   clearstdin();
   fgets(name, 30, stdin);
+  trim(name);
   
   int index = CListFindName(l, name);
   if(index >= 0)

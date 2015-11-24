@@ -39,3 +39,6 @@ Project Target=agenda,agenda
 Use External Terminal=true
 Working Directory=file:///home/camargo/
 isExecutable=false
+
+[Project]
+VersionControlSupport=kdevgit
