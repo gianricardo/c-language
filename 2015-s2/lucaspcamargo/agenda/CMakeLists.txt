@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
-project(agenda)
+
+project(agenda LANGUAGES C)
+set(PROJECT_VERSION 0.1)
 
 set(CMAKE_BUILD_TYPE Debug)
 

@@ -1,5 +1,5 @@
 PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
-PROJECT_NUMBER         = @VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@
+PROJECT_NUMBER         = @PROJECT_VERSION@
 STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@ \
                          @PROJECT_BINARY_DIR@
 INPUT                  = @doxy_main_page@ \
@@ -9,3 +9,4 @@ FILE_PATTERNS          = *.h \
                          *.c
 RECURSIVE              = YES
 USE_MDFILE_AS_MAINPAGE = @doxy_main_page@ 
+GENERATE_TREEVIEW      =  YES
