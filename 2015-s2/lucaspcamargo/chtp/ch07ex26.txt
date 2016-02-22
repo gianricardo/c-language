@@ -1,1 +1,0 @@
-If both strings have the same character in a given position, it returns 0. Otherwise, it returns 1.

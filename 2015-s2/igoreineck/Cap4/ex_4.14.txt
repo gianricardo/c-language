@@ -1,1 +1,0 @@
-A dificuldade em exibir o fatorial de 20, seria pela insuficiência de memória.
