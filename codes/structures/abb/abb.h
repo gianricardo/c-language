@@ -53,6 +53,7 @@ codigo_erro arv_insere      (ArvBB* arv, void* data);
  * @return
  */
 codigo_erro arv_remove       (ArvBB* arv, void* data);
+codigo_erro arv_remove2      (ArvBB* arv, void* data);
 //Caminhamentos
 void        arv_preordem    (const ArvBB* arv);
 void        arv_inordem     (const ArvBB* arv);

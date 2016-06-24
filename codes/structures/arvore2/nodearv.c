@@ -77,7 +77,7 @@ codigo_erro nodearv_novo_info(Node_Arv* no, void* ninfo,
 									void (*destroy)(void *data)){
 	if(no == NULL) {return (INVALIDO);}
 	if(no->info != ninfo){
-		(*destroy)(no->info);
+		if(destroy!=NULL) (*destroy)(no->info);
 	}
 	no->info=ninfo;
 	return (SUCESSO);

@@ -94,11 +94,15 @@ void arv_encontrarPai(ArvBB* arv, void* data, bool *encontrou, Node_Arv** pai, N
 void arv_substitui_menor_direita(ArvBB *arv, Node_Arv *no, Node_Arv *suc) {
     Node_Arv *tmp;
     if(nodearv_esq(suc) == NULL) {
+        Node_Arv *pai;
+        bool bpai;
+        arv_encontrarPai(arv,nodearv_info(suc),&bpai,&pai,NULL);
         nodearv_novo_info(no,nodearv_info(suc),arv->destroi);
         //remove suc
         tmp = suc;
         suc = nodearv_dir(suc); //altera no->dir
         nodearv_novo_dir(tmp,NULL);
+        if(bpai)nodearv_novo_dir(pai,NULL);
         nodearv_destruir(&tmp,arv->destroi, NULL);
         //free(tmp);//destruir tmp
     } else
@@ -149,6 +153,76 @@ codigo_erro arv_remove(ArvBB* arv, void* data) {
         return (INVALIDO);
 }
 
+codigo_erro arv_remove2(ArvBB* arv, void* data){
+    Node_Arv *pai,*x,*xsucc;
+    bool achou;
+    // If EMPTY TREE
+    if(arv->raiz==NULL) {
+        return (UNDERFLOW);
+    }
+    pai=x=NULL;
+    arv_encontrarPai(arv,data,&achou,&pai,&x);
+    if(!achou) {
+        return (VALOR_INVALIDO);
+    }
+
+     // Se o nó a apagar tiver duas subarvores
+     if(nodearv_esq(x) != NULL && nodearv_dir(x) != NULL) {
+         pai=x;
+         xsucc=nodearv_dir(x);
+
+         while(nodearv_esq(xsucc) != NULL) {
+             pai=xsucc;
+             xsucc=nodearv_esq(xsucc);
+         }
+         nodearv_novo_info(x,nodearv_info(xsucc),arv->destroi);
+         x=xsucc;
+     }
+
+     // Se o nó a apagar não tiver subarvores
+     if(nodearv_esq(x) == NULL && nodearv_dir(x) == NULL) {
+         if(nodearv_dir(pai) == x) {
+             nodearv_novo_dir(pai,NULL);
+         } else {
+             nodearv_novo_esq(pai,NULL);
+         }
+         nodearv_novo_dir(x,NULL);
+         nodearv_novo_esq(x,NULL);
+         nodearv_destruir(&x,arv->destroi,NULL);
+         arv->tamanho--;
+         return (SUCESSO);
+     }
+
+     // se o nó apenas tiver subarvore direita
+     if(nodearv_esq(x) == NULL && nodearv_dir(x) != NULL ) {
+         if(nodearv_esq(pai) == x) {
+             nodearv_novo_esq(pai,nodearv_dir(x));
+         } else {
+             nodearv_novo_dir(pai,nodearv_dir(x));
+         }
+         nodearv_novo_dir(x,NULL);
+         nodearv_novo_esq(x,NULL);
+         nodearv_destruir(&x,arv->destroi,NULL);
+         arv->tamanho--;
+         return (SUCESSO);
+     }
+
+     // se o nó apenas tiver subarvore esquerda
+     if(nodearv_esq(x) != NULL && nodearv_dir(x) == NULL) {
+         if(nodearv_esq(pai) == x) {
+             nodearv_novo_esq(pai,nodearv_esq(x));
+         } else {
+             nodearv_novo_dir(pai,nodearv_esq(x));
+         }
+         nodearv_novo_dir(x,NULL);
+         nodearv_novo_esq(x,NULL);
+         nodearv_destruir(&x,arv->destroi,NULL);
+         arv->tamanho--;
+         return (SUCESSO);
+     }
+     return (INVALIDO);
+}
+
 void arv_preordem_interna (const ArvBB* arv,const Node_Arv* raiz){
     if(raiz!=NULL){
         nodearv_mostra(raiz,arv->mostra);
@@ -186,7 +260,20 @@ void        arv_posordem    (const ArvBB* arv){
 }
 
 bool        arv_busca_bin   (const ArvBB* arv, void* info){
-    return false;
+    bool encontrou = false;
+    Node_Arv *q = arv->raiz;
+    while (q != NULL) {
+        if (arv->compara(nodearv_info(q), info) == 0) {
+            encontrou = true;
+            break;
+        }
+        if (arv->compara(nodearv_info(q), info) < 0) {
+            q = nodearv_esq(q);
+        } else {
+            q = nodearv_dir(q);
+        }
+    }
+    return encontrou;
 }
 
 bool arv_busca (    const ArvBB* arv,
